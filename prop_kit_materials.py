@@ -53,5 +53,29 @@ def assign_material(obj_name, shader_name):
     Returns:
         None
     """
-    sgs = cmds.listConnections(shader_name + 
+    sgs = cmds.listConnections(shader_name + ".outColor", type="shadingEngine")
+    #find the shading group
+
+    cmds.sets(obj_name, edit=True, forceElement=sgs[0])
+    #add the object to it
+
+def create_and_assign(obj_name, name="auto_mat", color=(0.75, 0.72, 0.65), material_type="lambert"):
+    """Convenience function: create a material and immediately assign it.
+
+    Args:
+        obj_name (str): The Maya object to receive the material.
+        name (str): Name for the new shader.
+        color (tuple): (r, g, b) color, values 0.0 to 1.0.
+        material_type (str): "lambert" or "blinn"
+
+    Returns:
+        str: The name of the created shader node.
+    """
+    shader = create_material(name, color, material_type)
+    #calling create_material
+
+    assign_material(obj_name, shader)
+    #assigning the material
+
+    return shader
     

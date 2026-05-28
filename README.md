@@ -6,7 +6,7 @@ Artists can control wall dimensions, pillar dimensions, and materials without to
 
 ## Planned Features
 - [x] Core geometry functions (Week 6)
-- [ ] Data-driven configuration (Week 7)
+- [X] Data-driven configuration (Week 7)
 - [ ] Error handling + debug mode (Week 8)
 - [ ] Maya UI window + JSON save/load (Week 9)
 - [ ] Polish + documentation (Week 10)

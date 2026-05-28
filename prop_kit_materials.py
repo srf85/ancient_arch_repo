@@ -28,13 +28,13 @@ def create_material(name="stone_mat", color=(0.75, 0.72, 0.65), material_type="l
     shader = cmds.shadingNode(material_type, aaShader=True, name=name)
     #create a shader node
 
-    shader_grp = cmds.sets(renderable=True, noSurfaceshader=True, empty=True, name=name + "_SG")
+    shader_grp = cmds.sets(renderable=True, noSurfaceShader=True, empty=True, name=name + "_SG")
     #connect the shader to the group
 
     cmds.connectAttr(shader + ".outColor", shader_grp + ".surfaceShader", force=True)
     #connect the shader to the group
 
-    cmds.setAttr(shader + ".color", *color, type="double3"
+    cmds.setAttr(shader + ".color", *color, type="double3")
     #set the color attribute
 
     return shader

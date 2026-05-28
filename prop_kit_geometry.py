@@ -64,7 +64,7 @@ def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_heig
 
     return pillar_group
 
-def create_arch(length=6, height=5, depth=1,subdivisionsX=6, subdivisionsY=2, position=(0, 0, 0)):
+def create_arch(length=6, height=5, depth=1, subdivisionsX=6, subdivisionsY=2, position=(0, 0, 0)):
     """Create a simple arch using a sliced poly torus, deleting the lower haft. 
 
     Args:

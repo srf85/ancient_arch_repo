@@ -32,7 +32,7 @@ def create_wall(length=10, height=4, depth=1, position=(0, 0, 0)):
 
   return wall
 
-def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_height=1
+def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_height=1,
                 position=(0, 0, 0)):
     """Create a simple pillar using a cylinder shaft and a cube base and top.
 

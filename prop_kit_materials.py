@@ -25,19 +25,23 @@ def create_material(name="stone_mat", color=(0.75, 0.72, 0.65), material_type="l
     Returns:
         str: The name of the created shader node.
     """
-    shader = cmds.shadingNode(material_type, aaShader=True, name=name)
-    #create a shader node
+    try:
+        shader = cmds.shadingNode(material_type, aaShader=True, name=name)
+        #create a shader node
 
-    shader_grp = cmds.sets(renderable=True, noSurfaceShader=True, empty=True, name=name + "_SG")
-    #connect the shader to the group
+        shader_grp = cmds.sets(renderable=True, noSurfaceShader=True, empty=True, name=name + "_SG")
+        #connect the shader to the group
 
-    cmds.connectAttr(shader + ".outColor", shader_grp + ".surfaceShader", force=True)
-    #connect the shader to the group
+        cmds.connectAttr(shader + ".outColor", shader_grp + ".surfaceShader", force=True)
+    #    connect the shader to the group
 
-    cmds.setAttr(shader + ".color", *color, type="double3")
-    #set the color attribute
+        cmds.setAttr(shader + ".color", *color, type="double3")
+        #set the color attribute
 
-    return shader
+        return shader
+    except Exception as e:
+        cmds.warning("create_material failed:{}".format(e))
+        return none
 
 def assign_material(obj_name, shader_name):
     """Assign an existing shader to a Maya object.
@@ -53,11 +57,14 @@ def assign_material(obj_name, shader_name):
     Returns:
         None
     """
-    sgs = cmds.listConnections(shader_name + ".outColor", type="shadingEngine")
-    #find the shading group
+    try:
+        sgs = cmds.listConnections(shader_name + ".outColor", type="shadingEngine")
+        #find the shading group
 
-    cmds.sets(obj_name, edit=True, forceElement=sgs[0])
-    #add the object to it
+        cmds.sets(obj_name, edit=True, forceElement=sgs[0])
+        #add the object to it
+    except Exception as e:
+        cmds.warning("assign_material failed: {}".format(e))
 
 def create_and_assign(obj_name, name="auto_mat", color=(0.75, 0.72, 0.65), material_type="lambert"):
     """Convenience function: create a material and immediately assign it.
@@ -71,11 +78,16 @@ def create_and_assign(obj_name, name="auto_mat", color=(0.75, 0.72, 0.65), mater
     Returns:
         str: The name of the created shader node.
     """
-    shader = create_material(name, color, material_type)
-    #calling create_material
+    try:
+        shader = create_material(name, color, material_type)
+        #calling create_material
 
-    assign_material(obj_name, shader)
-    #assigning the material
+        assign_material(obj_name, shader)
+        #assigning the material
 
-    return shader
+        return shader
+
+    except Exception as e:
+        cmds.warning("create_and_assign failed: {}".format(e))
+        return None
     

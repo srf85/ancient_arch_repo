@@ -24,13 +24,21 @@ def create_wall(length=10, height=4, depth=1, position=(0, 0, 0)):
   Returns:
       str: The name of the created wall transform node.
   """
-  wall = cmds.polyCube(width = width, height = height, depth = depth)[0]
-  #create wall from cube.
+  try:
+    if length <= 0 or height <= 0 or depth <= 0:
+      cmds.warning("create_wall: dimensions must be positive.")
+      return None
+      
+    wall = cmds.polyCube(width = width, height = height, depth = depth)[0]
+    #create wall from cube.
 
-  cmds.move(position[0], position[1] + height / 2.0, position[2], wall)
-  #move wall to the ground plane.
+    cmds.move(position[0], position[1] + height / 2.0, position[2], wall)
+    #move wall to the ground plane.
 
-  return wall
+    return wall
+  except Exception as e:
+    cmds.warning("create_wall failed: {}".format(e))
+    return None
 
 def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_height=1,
                 position=(0, 0, 0)):
@@ -46,23 +54,32 @@ def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_heig
     Returns:
         str: The name of a group node containing the pillar and base.
     """
-    pillar = cmds.polyCylinder(radius=pillar_radius, height=pillar_height)[0]
-    cmds.move(0, pillar_height / 2.0, 0, pillar)
-    #create pillar with poly cylinder + move pillar to ground level
+    try:
+      if any(v <= 0 for v in [pillar_radius, pillar_height, base_length, base_height]):
+        cmds.warning("create_pillar: dimensions must be positive.")
+        return None
+        
+      pillar = cmds.polyCylinder(radius=pillar_radius, height=pillar_height)[0]
+      cmds.move(0, pillar_height / 2.0, 0, pillar)
+      #create pillar with poly cylinder + move pillar to ground level
 
-    base = cmds.polyCube(width=base_length, height=base_height, depth=base_length)[0]
-    cmds.move(0, base_height / 2.0, 0, base)
-    #create pillar base with poly cube + move to the ground plane
+      base = cmds.polyCube(width=base_length, height=base_height, depth=base_length)[0]
+      cmds.move(0, base_height / 2.0, 0, base)
+      #create pillar base with poly cube + move to the ground plane
 
-    top = cmds.polyCube(width=base_length, height=base_height, depth=base_length)[0]
-    cmds.move(0, pillar_height + base_length, 0, top)
-    #create pillar top with poly cube + move to the height of the pillar
+      top = cmds.polyCube(width=base_length, height=base_height, depth=base_length)[0]
+      cmds.move(0, pillar_height + base_length, 0, top)
+      #create pillar top with poly cube + move to the height of the pillar
 
-    pillar_group = cmds.group(pillar, base, top)
-    cmds.move(position[0], position[1], position[2], pillar_group)
-    #create group for pillar, base, and top + move to position
+      pillar_group = cmds.group(pillar, base, top)
+      cmds.move(position[0], position[1], position[2], pillar_group)
+      #create group for pillar, base, and top + move to position
 
-    return pillar_group
+      return pillar_group
+
+    except Exception as e:
+      cmds.warning("create_pillar failed: {}".format(e))
+      return None
 
 def create_arch(length=6, height=5, depth=1, subdivisionsX=12, subdivisionsY=2, position=(0, 0, 0), **kwargs):
     """Create a simple arch using a sliced poly torus, deleting the lower haft. 
@@ -78,12 +95,28 @@ def create_arch(length=6, height=5, depth=1, subdivisionsX=12, subdivisionsY=2, 
     Returns:
         str: The name of the arch transformed node.
     """
-    arch = cmds.polyTorus(length=length, height=height, depth=depth, subdivisionsX=subdivisionsX, subdivisionsY=subdivisionsY)[0]
-    cmds.move(0, 0, 0, arch)
-    #create arch with poly Torus, with subdivisions
+    try:
+      if length <= 0 or height <= 0 or depth <= 0:
+        cmds.warning("create_arch: dimensions must be positive.")
+        return None
+        
+      arch = cmds.polyTorus(
+        length=length, 
+        height=height, 
+        depth=depth, 
+        subdivisionsX=subdivisionsX, 
+        subdivisionsY=subdivisionsY
+      )[0]
+      
+      cmds.move(0, 0, 0, arch)
+      #create arch with poly Torus, with subdivisions
+    
+      cmds.select(f"{arch}.f[96:143]")
+      cmds.delete()
+      #Select and delete bottom of the Torus
+  
+      return arch 
 
-    cmds.select(f"{arch}.f[96:143]")
-    cmds.delete()
-    #Select and delete bottom of the Torus
-
-    return arch 
+    except Exception as e:
+      cmds.warning("create_arch failed: {}".format(e))
+      return None

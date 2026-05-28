@@ -17,6 +17,7 @@ arch_prop_kit/
     prop_kit_geometry.py   # create_wall, create_pillar, create_arch
     prop_kit_materials.py  # create_material, assign_material
     main.py                # Entry point, config, build_fortress()
+    date_driven_scene.py   # scene data in dict. and config
     README.md              # This file
 ```
 

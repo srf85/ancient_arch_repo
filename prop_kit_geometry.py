@@ -24,7 +24,7 @@ def create_wall(length=10, height=4, depth=1, position=(0, 0, 0)):
   Returns:
       str: The name of the created wall transform node.
   """
-  wall = cmds.polyCube(length = length, height = height, depth = depth)[0]
+  wall = cmds.polyCube(width = width, height = height, depth = depth)[0]
   #create wall from cube.
 
   cmds.move(position[0], position[1] + height / 2.0, position[2], wall)
@@ -64,13 +64,16 @@ def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_heig
 
     return pillar_group
 
-def create_arch(length=6, height=5, depth=1, subdivisionsX=6, subdivisionsY=2, position=(0, 0, 0)):
+def create_arch(length=6, height=5, depth=1, subdivisionsX=12, subdivisionsY=2, position=(0, 0, 0), **kwargs):
     """Create a simple arch using a sliced poly torus, deleting the lower haft. 
 
     Args:
         length (float): Length of the arch opening along the X axis.
         height (float): Height from the base to the tip of the Arch.
         depth (float): Depth of the arch along the Z axis.
+        subdivisionsX (int):  Sections around the torus ring.
+        subdivisionsY (int):  Sections along the tube
+        position (tuple): (x, y, z) world position.
 
     Returns:
         str: The name of the arch transformed node.
@@ -80,13 +83,7 @@ def create_arch(length=6, height=5, depth=1, subdivisionsX=6, subdivisionsY=2, p
     #create arch with poly Torus, with subdivisions
 
     cmds.select(f"{arch}.f[96:143]")
-    cmds.delete
+    cmds.delete()
     #Select and delete bottom of the Torus
 
     return arch 
-
-
-
-    
-
-    

@@ -8,7 +8,7 @@ walls, pillars, and arches.
 
 import maya.cmds as cmds
 
-def create_wall(length=10, height=4, depth=1, position=(0, 0, 0)):
+def create_wall(width=10, height=4, depth=1, position=(0, 0, 0)):
   
   """Create a simple rectangular stone wall segment as a Maya polyCube.
 
@@ -25,7 +25,7 @@ def create_wall(length=10, height=4, depth=1, position=(0, 0, 0)):
       str: The name of the created wall transform node.
   """
   try:
-    if length <= 0 or height <= 0 or depth <= 0:
+    if width <= 0 or height <= 0 or depth <= 0:
       cmds.warning("create_wall: dimensions must be positive.")
       return None
       
@@ -81,13 +81,12 @@ def create_pillar(pillar_radius=0.5, pillar_height=4, base_length=1.5, base_heig
       cmds.warning("create_pillar failed: {}".format(e))
       return None
 
-def create_arch(length=6, height=5, depth=1, subdivisionsX=12, subdivisionsY=2, position=(0, 0, 0), **kwargs):
+def create_arch(radius=6, sectionRadius=2 subdivisionsX=12, subdivisionsY=2, position=(0, 0, 0), **kwargs):
     """Create a simple arch using a sliced poly torus, deleting the lower haft. 
 
     Args:
-        length (float): Length of the arch opening along the X axis.
-        height (float): Height from the base to the tip of the Arch.
-        depth (float): Depth of the arch along the Z axis.
+        radius (int): radius of the torus ring.
+        sectionRadius (int): section radius of the torus ring.
         subdivisionsX (int):  Sections around the torus ring.
         subdivisionsY (int):  Sections along the tube
         position (tuple): (x, y, z) world position.
@@ -96,16 +95,15 @@ def create_arch(length=6, height=5, depth=1, subdivisionsX=12, subdivisionsY=2, 
         str: The name of the arch transformed node.
     """
     try:
-      if length <= 0 or height <= 0 or depth <= 0:
+    if any(v <= 0 for v in [radius, sectionRadius, subdivisionsX, subdivisionsY]):
         cmds.warning("create_arch: dimensions must be positive.")
         return None
         
       arch = cmds.polyTorus(
-        length=length, 
-        height=height, 
-        depth=depth, 
+        radius=radius,
+        sectionRadius=sectionRadius,
         subdivisionsX=subdivisionsX, 
-        subdivisionsY=subdivisionsY
+        subdivisionsY=subdivisionsY,
       )[0]
       
       cmds.move(0, 0, 0, arch)

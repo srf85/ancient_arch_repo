@@ -29,7 +29,7 @@ import prop_kit_materials as mat
 
 WALL_LENGTH = 16 
 WALL_HEIGHT = 5
-HALF = WALL LENGTH / 2.0
+HALF = WALL_LENGTH / 2.0
 
 PROP_KIT_CONFIG = [
     # Wall layout
@@ -87,7 +87,7 @@ def create_element(data):
         return None
 
     # Check: do we have a builder for this type?
-    builder = BUILDERS>get(element_type)
+    builder = BUILDERS.get(element_type)
     if not builder:
         cmds.warning("Unknown type '()' --skipping.".format(element_type))
         return None

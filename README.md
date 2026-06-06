@@ -8,8 +8,8 @@ Artists can control wall dimensions, pillar dimensions, and materials without to
 - [x] Core geometry functions (Week 6)
 - [X] Data-driven configuration (Week 7)
 - [X] Error handling + debug mode (Week 8)
-- [ ] Maya UI window + JSON save/load (Week 9)
-- [ ] Polish + documentation (Week 10)
+- [X] Maya UI window + JSON save/load (Week 9)
+- [X] Polish + documentation (Week 10)
 
 ## Project Structure
 ```
@@ -18,6 +18,7 @@ arch_prop_kit/
     prop_kit_materials.py  # create_material, assign_material
     main.py                # Entry point, config, build_fortress()
     date_driven_scene.py   # scene data in dict. and config
+    maya_ui.py             # maya ui window builder
     README.md              # This file
 ```
 
@@ -30,12 +31,18 @@ arch_prop_kit/
 
 ### prop_kit_materials.py
 - `create_material(name, color)` — Lambert shader with RGB color
-- `assign_material(obj_name, shader_name)` — Apply shader to object/group
+- `assign_material(obj_name, shader_name)` — Apply shader to object/
+
+### maya_ui.py
+- `show()` — Open the prop kit UI window
 
 ## How to Run
 1. Open Maya
 2. Open Script Editor (Windows > General Editors > Script Editor)
-3. Source `main.py` from the arch_prop_kit folder
+3. Run the following in the Python tab:
+
+import maya_ui
+maya_ui.show()
 
 ## Author
 Sidney Ferrone | DIGM 131 | Drexel University

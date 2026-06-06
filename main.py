@@ -27,7 +27,7 @@ import prop_kit_materials as mat
 # The rest are parameters for that function.
 # Add a new element = add one dict. No code changes needed.
 
-WALL_LENGTH = 16 
+WALL_LENGTH = 16
 WALL_HEIGHT = 5
 HALF = WALL_LENGTH / 2.0
 
@@ -36,7 +36,7 @@ PROP_KIT_CONFIG = [
     {"type": "wall", "length": WALL_LENGTH, "height": WALL_HEIGHT,
      "position": (0, 0, HALF)},
     {"type": "wall", "length": WALL_LENGTH, "height": WALL_HEIGHT,
-     "position": (0, 0, -HALF)}
+     "position": (0, 0, -HALF)},
 
     # pillar layout
     {"type": "pillar", "pillar_radius": 1.5, "pillar_height": 8,
@@ -89,7 +89,7 @@ def create_element(data):
     # Check: do we have a builder for this type?
     builder = BUILDERS.get(element_type)
     if not builder:
-        cmds.warning("Unknown type '()' --skipping.".format(element_type))
+        cmds.warning("Unknown type '{}' --skipping.".format(element_type))
         return None
 
     # Strip "type" before ** unpacking -- it's not a function parameter
@@ -118,6 +118,8 @@ def build_prop_kit(config=None):
         config = PROP_KIT_CONFIG
 
     cmds.file(new=True, force=True)
+    
+    results = []
 
     # create materials
     shaders = {}
@@ -154,3 +156,4 @@ if __name__ == "__main__":
     create_element({"type": "yoyo", "size": 10})    # Unknown type
     create_element({"type": "wall", "length": -1})  # Negative value
     print("--- All tests passed (warnings, not crashes) ---")
+    

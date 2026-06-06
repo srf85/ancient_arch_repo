@@ -16,6 +16,7 @@ import maya.cmds as cmds
 # ---------------------------------------------------------------------------
 # Path setup
 # ---------------------------------------------------------------------------
+
 try:
     _THIS_DIR = os.path.dirname(os.path.abspath(__file__))
 except NameError:
@@ -30,6 +31,7 @@ import prop_kit_materials as mat
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
+
 WINDOW_ID    = "AncientArchPropKit"
 WINDOW_TITLE = "Arch Prop Kit Generator"
 
@@ -76,6 +78,7 @@ def _make_material(obj, shader_name, color):
     """Create a shader and assign it to obj."""
     if obj is None:
         return
+        
     shader = mat.create_material(shader_name, color)
     mat.assign_material(obj, shader)
 
@@ -86,7 +89,7 @@ def _make_material(obj, shader_name, color):
 def build_wall(*args):
     """Read wall widgets and call geo.create_wall."""
     obj = geo.create_wall(
-        length   = _float("wall_length",  10.0),
+        width    = _float("wall_width",   10.0),
         height   = _slider_float("wall_height"),
         depth    = _float("wall_depth",    1.0),
         position = (
@@ -96,11 +99,12 @@ def build_wall(*args):
         ),
     )
     _make_material(obj, "wall_stone", _color("wall_color"))
+    
     if obj:
         cmds.select(obj)
         print("[PropKit] Wall created: {}".format(obj))
-
-
+ 
+ 
 def build_pillar(*args):
     """Read pillar widgets and call geo.create_pillar."""
     obj = geo.create_pillar(
@@ -115,40 +119,42 @@ def build_pillar(*args):
         ),
     )
     _make_material(obj, "pillar_marble", _color("pillar_color"))
+    
     if obj:
         cmds.select(obj)
         print("[PropKit] Pillar created: {}".format(obj))
-
-
+ 
+ 
 def build_arch(*args):
     """Read arch widgets and call geo.create_arch."""
+    
     obj = geo.create_arch(
-        length       = _float("arch_length", 6.0),
-        height       = _float("arch_height", 5.0),
-        depth        = _float("arch_depth",  1.0),
+        radius        = _slider_float("arch_radius"),
+        sectionRadius = _slider_float("arch_section_radius"),
         subdivisionsX = _slider_int("arch_subX"),
         subdivisionsY = _slider_int("arch_subY"),
-        position     = (
+        position      = (
             _float("arch_pos_x"),
             _float("arch_pos_y"),
             _float("arch_pos_z"),
         ),
     )
     _make_material(obj, "arch_marble", _color("arch_color"))
+    
     if obj:
         cmds.select(obj)
         print("[PropKit] Arch created: {}".format(obj))
-
+ 
 
 def build_all(*args):
     """Create one of each prop at default positions."""
     build_wall()
     build_pillar()
     build_arch()
+    
     cmds.viewFit(allObjects=True)
     print("[PropKit] Full prop kit built.")
-
-
+ 
 # ---------------------------------------------------------------------------
 # UI layout helpers
 # ---------------------------------------------------------------------------
@@ -171,6 +177,7 @@ def _pos_row(prefix):
     """Compact X / Y / Z floatField row for a given prefix (e.g. 'wall')."""
     cmds.text(label="Position  X / Y / Z", align="left")
     cmds.rowLayout(numberOfColumns=6, columnWidth6=(28, 55, 28, 55, 28, 55))
+    
     for axis in ("x", "y", "z"):
         cmds.text(label=axis.upper(), align="right")
         widgets["{}_pos_{}".format(prefix, axis)] = cmds.floatField(
@@ -256,7 +263,7 @@ def build_window():
   
     _section("ARCH")
     cmds.columnLayout(adjustableColumn=True, rowSpacing=2)
-    # arch section in window 
+    # arch section in window
 
     _float_row("Length", "arch_length", 6.0)
     _float_row("Height", "arch_height", 5.0)
@@ -285,7 +292,7 @@ def build_window():
                 backgroundColor=(0.30, 0.36, 0.44))
     cmds.setParent(main_col)
 
-    # --------------------------------------------------------------- 
+    # ---------------------------------------------------------------
   
     _section("SCENE")
     cmds.columnLayout(adjustableColumn=True, rowSpacing=4)

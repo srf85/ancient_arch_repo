@@ -37,9 +37,10 @@ arch_prop_kit/
 - `show()` — Open the prop kit UI window
 
 ## How to Run
-1. Open Maya
-2. Open Script Editor (Windows > General Editors > Script Editor)
-3. Run the following in the Python tab:
+1. Copy this folder into your maya scripts folder (Documents > Maya > Scripts)
+2. Open Maya
+3. Open Script Editor (Windows > General Editors > Script Editor)
+4. Run the following in the Python tab:
 
 import maya_ui
 maya_ui.show()
